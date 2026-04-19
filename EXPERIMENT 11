@@ -1,0 +1,63 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* left;
+    struct Node* right;
+};
+
+// Create new node
+struct Node* newNode(int value) {
+    struct Node* temp = (struct Node*)malloc(sizeof(struct Node));
+    temp->data = value;
+    temp->left = temp->right = NULL;
+    return temp;
+}
+
+// Insert in BST
+struct Node* insert(struct Node* root, int value) {
+    if (root == NULL)
+        return newNode(value);
+
+    if (value < root->data)
+        root->left = insert(root->left, value);
+    else
+        root->right = insert(root->right, value);
+
+    return root;
+}
+
+// Print values in range [low, high]
+void printInRange(struct Node* root, int low, int high) {
+    if (root == NULL)
+        return;
+
+    if (root->data > low)
+        printInRange(root->left, low, high);
+
+    if (root->data >= low && root->data <= high)
+        printf("%d ", root->data);
+
+    if (root->data < high)
+        printInRange(root->right, low, high);
+}
+
+// Driver code
+int main() {
+    struct Node* root = NULL;
+
+    // Example tree
+    root = insert(root, 17);
+    insert(root, 4);
+    insert(root, 18);
+    insert(root, 2);
+    insert(root, 9);
+
+    int low = 4, high = 24;
+
+    printf("Elements in range: ");
+    printInRange(root, low, high);
+
+    return 0;
+}
